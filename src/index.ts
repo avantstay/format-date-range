@@ -1,35 +1,50 @@
-import { format, isSameMonth, isSameYear } from 'date-fns'
+import { format, isSameMonth, isSameYear } from "date-fns";
 
 const languagesFormat = {
-  'en-US': {
-    defaultStart: 'MMM DD, YYYY ',
-    defaultEnd: ' MMM DD, YYYY',
-    sameMonthStart: 'MMM DD',
-    sameMonthEnd: 'DD, YYYY',
-    sameYearStart: 'MMM DD ',
-    sameYearEnd: ' MMM DD, YYYY',
+  "en-US": {
+    defaultStart: "MMM DD, YYYY ",
+    defaultEnd: " MMM DD, YYYY",
+    sameMonthStart: "MMM DD",
+    sameMonthEnd: "DD, YYYY",
+    sameYearStart: "MMM DD ",
+    sameYearEnd: " MMM DD, YYYY"
   }
+};
+
+export interface ExtraOptions {
+  formats?: {
+    defaultStart: string;
+    defaultEnd: string;
+    sameMonthStart: string;
+    sameMonthEnd: string;
+    sameYearStart: string;
+    sameYearEnd: string;
+  };
 }
 
-export const formatDateRange = (startDate: Date | string, endDate: Date | string, language: 'en-US' = 'en-US') => {
+type StringOrDate = Date | string;
+
+export const formatDateRange = (
+  startDate: StringOrDate,
+  endDate: StringOrDate,
+  language: "en-US" = "en-US",
+  extraOptions: ExtraOptions = {}
+) => {
   if (!startDate || !endDate) {
-    return ''
+    return "";
   }
 
-  let langFormat = languagesFormat[language]
-  let startFormat = langFormat.defaultStart
-  let endFormat = langFormat.defaultEnd
+  let langFormat = { ...languagesFormat[language], ...extraOptions.formats };
+  let startFormat = langFormat.defaultStart;
+  let endFormat = langFormat.defaultEnd;
 
   if (isSameMonth(startDate, endDate)) {
-    startFormat = langFormat.sameMonthStart
-    endFormat = langFormat.sameMonthEnd
+    startFormat = langFormat.sameMonthStart;
+    endFormat = langFormat.sameMonthEnd;
   } else if (isSameYear(startDate, endDate)) {
-    startFormat = langFormat.sameYearStart
-    endFormat = langFormat.sameYearEnd
+    startFormat = langFormat.sameYearStart;
+    endFormat = langFormat.sameYearEnd;
   }
 
-  return [
-    format(startDate, startFormat),
-    format(endDate, endFormat)
-  ].join('-')
-}
+  return [format(startDate, startFormat), format(endDate, endFormat)].join("-");
+};

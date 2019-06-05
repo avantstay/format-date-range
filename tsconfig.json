@@ -2,12 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "lib": [
-      "es6",
-      "dom",
-      "es2017.string",
-      "es2018.promise"
-    ],
+    "lib": ["es6", "dom", "es2017.string", "es2018.promise"],
     "declaration": true,
     "allowJs": false,
     "rootDir": "src",
@@ -27,7 +22,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": [
-    "src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts"]
 }
